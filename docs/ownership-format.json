@@ -1,0 +1,37 @@
+{
+  "_what": "The definition of the MINE / YOURS ownership block used to close a message that hands off work between an agent and its reader. Read by a Claude Code Stop hook and by an agent gateway's pre-send formatter, so the two can never drift apart.",
+  "version": 1,
+  "labels": {
+    "mine": "MINE",
+    "yours": "YOURS"
+  },
+  "label_pattern": "^\\s*[#>\\-*\\s]*\\**\\s*{LABEL}\\s*\\**\\s*:",
+  "rules": {
+    "max_blocks_per_turn": 1,
+    "block_position": "end",
+    "single_label_allowed": true,
+    "drop_empty_labels": true,
+    "force_full_resend": false,
+    "correction_scope": "block_only"
+  },
+  "empty_values": [
+    "nothing",
+    "nothing.",
+    "none",
+    "none.",
+    "n/a",
+    "nothing running",
+    "nothing running.",
+    "nothing pending",
+    "nothing pending.",
+    "nothing yet",
+    "nothing for now",
+    "nothing for now."
+  ],
+  "notes": [
+    "single_label_allowed: a block may carry MINE alone or YOURS alone. Never pad the missing one with 'nothing'.",
+    "drop_empty_labels: a label whose whole value is one of empty_values is removed, not shown.",
+    "force_full_resend false: a check that runs after the reader has seen the message must never ask for the whole message again, because that is the duplicate. It may ask for the corrected block only.",
+    "max_blocks_per_turn counts only the final message a reader sees for that piece of work. Status messages sent while background agents are still running should carry no block at all."
+  ]
+}
